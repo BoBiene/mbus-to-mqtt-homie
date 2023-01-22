@@ -106,7 +106,7 @@ arrayBusAddresses.forEach(busAddress => {
     schedule.scheduleJob(config.get('publishIntervall'), () => {
         mbusMaster.getData(busAddress, function (err, data) {
             if (err) {
-                logger.error('Error on mbus id %d recieve: '+ busAddress, err);
+                logger.error(`Error on mbus id ${busAddress} recieve: ${err}`);
             }
             else {
                 logger.debug(`recieved mbus-data (id: ${busAddress}):\n ${JSON.stringify(data, null, 2)}`);
