@@ -1,0 +1,22 @@
+{
+    "mqtt": {
+        "base_topic": "homie/mbus",
+        "client" : {
+            "host": "localhost",
+            "port": 1883,
+            "username": null,
+            "password": null
+        }
+    },
+    "mbus": {
+        "autoConnect": true,
+        "busAddresses": [
+            1
+        ]
+    },
+    "publishIntervall": "*/5 * * * * *",
+    "logging": {
+        "info": true,
+        "debug": false
+    }
+}

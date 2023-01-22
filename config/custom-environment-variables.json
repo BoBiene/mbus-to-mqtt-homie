@@ -1,0 +1,18 @@
+{
+    "mqtt": {
+        "client": {
+            "host": "MQTT_HOST",
+            "port": "MQTT_PORT",
+            "username": "MQTT_USERNAME",
+            "password": "MQTT_PASSWORD"
+        },
+        "base_topic": "MQTT_BASE_TOPIC"
+    },
+    "mbus": {
+        "host": "MBUS_TCP_HOST",
+        "port": "MBUS_TCP_PORT",
+        "timeout": "MBUS_TCP_TIMEOUT",
+        "serialPort": "MBUS_SERIAL_PORT",
+        "serialBaudRate": "MBUS_SERIAL_BAUDRATE"
+    }
+}
