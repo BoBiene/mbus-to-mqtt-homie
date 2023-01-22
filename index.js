@@ -9,31 +9,31 @@ const regexFactorUnit = /^(?<Factor>1e-\d)\s+(?<Unit>.+)$/;
 
 const arrayBusAddresses = config.get('mbus.busAddresses');
 
+winston.configure({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+    	winston.format.simple()
+    ),
+    // defaultMeta: { service: 'mbus-to-mqtt-homie' },
+    transports: [
+        new winston.transports.Console()
+    ]
+})
+
 const logger = winston.createLogger({
     level: 'info',
-    format: winston.format.json(),
-    defaultMeta: { service: 'user-service' },
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+    	winston.format.simple()
+    ),
+    // defaultMeta: { service: 'mbus-to-mqtt-homie' },
     transports: [
-        new winston.transports.Console(),
-        //
-        // - Write all logs with importance level of `error` or less to `error.log`
-        // - Write all logs with importance level of `info` or less to `combined.log`
-        //
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' }),
-    ],
+        new winston.transports.Console()
+    ]
 });
-
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
-if (process.env.NODE_ENV !== 'production') {
-    logger.add(new winston.transports.Console({
-        format: winston.format.simple(),
-    }));
-}
-
 
 var myDevice = new HomieDevice({
     'name': 'mbus-to-mqtt-homie',
@@ -42,7 +42,7 @@ var myDevice = new HomieDevice({
 });
 
 var mbusOptions = config.get('mbus');
-logger.info("MBus options: %o", JSON.stringify(mbusOptions, null, 2));
+logger.info(`MBus options: ${JSON.stringify(mbusOptions)}`);
 
 var mbusMaster = new MbusMaster(mbusOptions);
 mbusMaster.connect();
@@ -54,10 +54,10 @@ arrayBusAddresses.forEach(busAddress => {
     // request for data from devide with ID busAddress
     mbusMaster.getData(busAddress, function (err, data) {
         if (err) {
-            logger.error('Error on mbus recieve: %o', err);
+            logger.error('Error on mbus recieve: ' + err);
         }
         else {
-            logger.info('recieved mbus-data:\n%s', JSON.stringify(data, null, 2));
+            logger.info('recieved mbus-data: ' + JSON.stringify(data));
 
             if (data.SlaveInformation) {
                 for (let propertyName in data.SlaveInformation) {
@@ -106,10 +106,10 @@ arrayBusAddresses.forEach(busAddress => {
     schedule.scheduleJob(config.get('publishIntervall'), () => {
         mbusMaster.getData(busAddress, function (err, data) {
             if (err) {
-                logger.error('Error on mbus id %d recieve: %o', busAddress, err);
+                logger.error('Error on mbus id %d recieve: '+ busAddress, err);
             }
             else {
-                logger.debug('recieved mbus-data (id: %d):\n%s', busAddress, JSON.stringify(data, null, 2));
+                logger.debug(`recieved mbus-data (id: ${busAddress}):\n ${JSON.stringify(data, null, 2)}`);
 
                 if (data.SlaveInformation) {
                     for (let propertyName in data.SlaveInformation) {
