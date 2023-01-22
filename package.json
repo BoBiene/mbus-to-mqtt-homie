@@ -1,0 +1,18 @@
+{
+  "name": "mbus-debug",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@chrispyduck/homie-device": "^0.1.34",
+    "config": "^3.3.9",
+    "mqtt": "^4.3.7",
+    "node-mbus": "^2.0.0",
+    "node-schedule": "^2.1.1"
+  }
+}
